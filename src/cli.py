@@ -5,6 +5,7 @@ PyKnife - Python implementation of common Linux CLI tools.
 
 import sys
 import argparse
+import os
 from importlib import import_module
 
 
@@ -19,16 +20,22 @@ def main():
     command_args = sys.argv[2:]
 
     try:
+        # Add the parent directory to sys.path so imports work correctly
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        
         # Import the command module
-        command_module = import_module(f"commands.{command}", package="src")
+        command_module = import_module(f"src.commands.{command}")
         
         # Call the main function of the command
         return command_module.main(command_args)
-    except ModuleNotFoundError:
-        print(f"Error: Command '{command}' not found", file=sys.stderr)
+    except ModuleNotFoundError as e:
+        print(f"Error: Command '{command}' not found ({str(e)})", file=sys.stderr)
         sys.exit(1)
-    except AttributeError:
-        print(f"Error: Command '{command}' is not properly implemented", file=sys.stderr)
+    except AttributeError as e:
+        print(f"Error: Command '{command}' is not properly implemented ({str(e)})", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error executing command '{command}': {str(e)}", file=sys.stderr)
         sys.exit(1)
 
 

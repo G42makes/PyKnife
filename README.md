@@ -15,6 +15,7 @@ PyKnife provides pure Python implementations of common Linux command-line tools.
 ## Currently Implemented Commands
 
 - `echo` - Display a line of text
+- `pwd` - Print the current working directory
 
 ## Installation
 
