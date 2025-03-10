@@ -63,10 +63,28 @@ Choose a Linux command to implement. Prioritize common, useful commands with wel
 ## Pull Request Process
 
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch (see branch naming convention below)
 3. Make your changes
 4. Run tests to ensure they pass
 5. Submit a pull request with a clear description of the changes
+
+### Branch Naming Convention
+
+Use the following branch naming convention to help keep the repository organized:
+
+```
+command/[command-name]            # For adding new commands
+fix/[command-name]/[issue]        # For bug fixes
+enhance/[command-name]/[feature]  # For enhancing existing commands
+infra/[component]                 # For infrastructure improvements
+```
+
+Examples:
+- `command/cat` - Adding the cat command
+- `command/ls` - Adding the ls command
+- `fix/echo/newline-handling` - Fixing a newline handling issue in echo
+- `enhance/echo/color-support` - Adding color support to echo
+- `infra/test-framework` - Improving the test framework
 
 ## Command Implementation Best Practices
 

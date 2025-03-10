@@ -99,7 +99,7 @@ See the [CONTRIBUTING.md](CONTRIBUTING.md) file for detailed guidance on adding 
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request. When contributing, please follow our [branch naming convention](CONTRIBUTING.md#branch-naming-convention) (e.g., `command/cat` for adding a new command).
 
 Please note that this project was developed with significant AI assistance. If you use AI tools for your contributions, please follow the guidelines in [AI Contributions](ai.md).
 
