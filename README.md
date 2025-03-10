@@ -101,6 +101,8 @@ See the [CONTRIBUTING.md](CONTRIBUTING.md) file for detailed guidance on adding 
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+Please note that this project was developed with significant AI assistance. If you use AI tools for your contributions, please follow the guidelines in [AI Contributions](ai.md).
+
 ## License
 
 See the [LICENSE](LICENSE) file for details. 
