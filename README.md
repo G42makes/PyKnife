@@ -20,6 +20,7 @@ PyKnife provides pure Python implementations of common Linux command-line tools.
 - `cat` - Concatenate files and print to standard output
 - `head` - Output the first part of files
 - `wc` - Print newline, word, and byte counts for each file
+- `tail` - Output the last part of files
 
 ## Installation
 
