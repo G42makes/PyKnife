@@ -11,6 +11,7 @@ PyKnife provides pure Python implementations of common Linux command-line tools.
 - Pure Python 3 implementation
 - Minimal dependencies (uses primarily the Python standard library)
 - Commands match the behavior of their Linux counterparts
+- BusyBox-style invocation through symlinks
 
 ## Currently Implemented Commands
 
@@ -29,11 +30,42 @@ python src/cli.py echo "Hello, World!"
 
 ## Usage
 
+PyKnife can be used in two ways:
+
+### 1. Specifying Command as an Argument
+
 ```
 python src/cli.py COMMAND [ARGS]
 ```
 
-Where `COMMAND` is one of the implemented commands (e.g., `echo`).
+For example:
+```bash
+python src/cli.py echo "Hello, World!"
+python src/cli.py pwd
+```
+
+### 2. BusyBox-Style Symlink Invocation
+
+You can set up symlinks to run commands directly, similar to BusyBox:
+
+```bash
+# Setup symlinks in a directory (e.g., ~/bin)
+python scripts/setup_symlinks.py ~/bin
+
+# Now you can run commands directly
+~/bin/echo "Hello, World!"
+~/bin/pwd
+```
+
+On Windows, use:
+```
+python scripts\setup_symlinks.py .\bin --py
+python .\bin\echo.py "Hello, World!"
+```
+
+This symlink-based approach allows you to use PyKnife commands just like their native counterparts!
+
+## Documentation
 
 See the [documentation](docs/commands/) for details on each command.
 
