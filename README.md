@@ -15,14 +15,15 @@ PyKnife provides pure Python implementations of common Linux command-line tools.
 
 ## Currently Implemented Commands
 
-- `echo` - Display a line of text
-- `pwd` - Print the current working directory
 - `cat` - Concatenate files and print to standard output
+- `echo` - Display a line of text
 - `head` - Output the first part of files
-- `wc` - Print newline, word, and byte counts for each file
+- `ls` - List directory contents
+- `mkdir` - Create directories
+- `pwd` - Print the current working directory
 - `tail` - Output the last part of files
 - `touch` - Update the access and modification times of files
-- `mkdir` - Create directories
+- `wc` - Print newline, word, and byte counts for each file
 
 ## Installation
 
