@@ -22,6 +22,7 @@ PyKnife provides pure Python implementations of common Linux command-line tools.
 - `wc` - Print newline, word, and byte counts for each file
 - `tail` - Output the last part of files
 - `touch` - Update the access and modification times of files
+- `mkdir` - Create directories
 
 ## Installation
 
