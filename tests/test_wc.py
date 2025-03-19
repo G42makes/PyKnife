@@ -201,20 +201,20 @@ class ReferenceWcTests(unittest.TestCase):
     
     def setUp(self):
         """Set up for reference tests."""
+        # Create temporary test files
         self.temp_files = []
         
-        # Create a test file
-        self.test_file = self.create_temp_file(
-            "reference.txt",
-            "This is a test file\nfor reference testing.\nIt has 3 lines and 13 words.\n"
-        )
-
+        # Create a test file with content
+        content = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\n"
+        self.test_file = self.create_temp_file("test_wc.txt", content)
+    
     def tearDown(self):
-        """Clean up after tests."""
+        """Clean up after reference tests."""
+        # Clean up temporary files
         for file_path in self.temp_files:
             if os.path.exists(file_path):
                 os.remove(file_path)
-
+    
     def create_temp_file(self, name, content):
         """Create a temporary file with given content."""
         fd, path = tempfile.mkstemp(suffix=name)
@@ -225,7 +225,7 @@ class ReferenceWcTests(unittest.TestCase):
         
         self.temp_files.append(path)
         return path
-
+    
     def test_reference_basic(self):
         """Compare basic wc with system command."""
         args = [self.test_file]
@@ -234,17 +234,25 @@ class ReferenceWcTests(unittest.TestCase):
         if not result['system_available']:
             self.skipTest(f"System command 'wc' not available: {result['error']}")
         
-        # Compare only numbers, ignoring whitespace differences
-        pyknife_numbers = [int(n) for n in result['pyknife_output'].split() if n.isdigit()]
-        system_numbers = [int(n) for n in result['system_output'].split() if n.isdigit()]
+        # Normalize whitespace for comparison - the actual counts are the important part
+        def normalize(text):
+            # Split by whitespace and filename, extract the numbers
+            parts = text.strip().split()
+            if len(parts) >= 4:  # Has line count, word count, byte count, filename
+                numbers = parts[:3]
+                return [int(n) for n in numbers]
+            return text
+        
+        pyknife_nums = normalize(result['pyknife_output'])
+        system_nums = normalize(result['system_output'])
         
         self.assertEqual(
-            pyknife_numbers, system_numbers,
-            f"Output mismatch:\nPyKnife: {result['pyknife_output']}\n"
-            f"System: {result['system_output']}"
+            pyknife_nums, system_nums,
+            f"Count mismatch:\nPyKnife: {repr(result['pyknife_output'])}\n"
+            f"System: {repr(result['system_output'])}"
         )
     
-    def test_reference_lines(self):
+    def test_reference_count_lines(self):
         """Compare wc -l with system command."""
         args = ["-l", self.test_file]
         result = compare_with_system("wc", args, wc.main)
@@ -252,13 +260,68 @@ class ReferenceWcTests(unittest.TestCase):
         if not result['system_available']:
             self.skipTest(f"System command 'wc' not available: {result['error']}")
         
-        pyknife_number = int(result['pyknife_output'].split()[0])
-        system_number = int(result['system_output'].split()[0])
+        # Normalize whitespace for comparison
+        def normalize(text):
+            parts = text.strip().split()
+            if len(parts) >= 2:  # Has line count and filename
+                return int(parts[0])
+            return text
+        
+        pyknife_num = normalize(result['pyknife_output'])
+        system_num = normalize(result['system_output'])
         
         self.assertEqual(
-            pyknife_number, system_number,
-            f"Output mismatch:\nPyKnife: {result['pyknife_output']}\n"
-            f"System: {result['system_output']}"
+            pyknife_num, system_num,
+            f"Count mismatch:\nPyKnife: {repr(result['pyknife_output'])}\n"
+            f"System: {repr(result['system_output'])}"
+        )
+    
+    def test_reference_count_words(self):
+        """Compare wc -w with system command."""
+        args = ["-w", self.test_file]
+        result = compare_with_system("wc", args, wc.main)
+        
+        if not result['system_available']:
+            self.skipTest(f"System command 'wc' not available: {result['error']}")
+        
+        # Normalize whitespace for comparison
+        def normalize(text):
+            parts = text.strip().split()
+            if len(parts) >= 2:  # Has word count and filename
+                return int(parts[0])
+            return text
+        
+        pyknife_num = normalize(result['pyknife_output'])
+        system_num = normalize(result['system_output'])
+        
+        self.assertEqual(
+            pyknife_num, system_num,
+            f"Count mismatch:\nPyKnife: {repr(result['pyknife_output'])}\n"
+            f"System: {repr(result['system_output'])}"
+        )
+    
+    def test_reference_count_chars(self):
+        """Compare wc -c with system command."""
+        args = ["-c", self.test_file]
+        result = compare_with_system("wc", args, wc.main)
+        
+        if not result['system_available']:
+            self.skipTest(f"System command 'wc' not available: {result['error']}")
+        
+        # Normalize whitespace for comparison
+        def normalize(text):
+            parts = text.strip().split()
+            if len(parts) >= 2:  # Has char count and filename
+                return int(parts[0])
+            return text
+        
+        pyknife_num = normalize(result['pyknife_output'])
+        system_num = normalize(result['system_output'])
+        
+        self.assertEqual(
+            pyknife_num, system_num,
+            f"Count mismatch:\nPyKnife: {repr(result['pyknife_output'])}\n"
+            f"System: {repr(result['system_output'])}"
         )
 
 
