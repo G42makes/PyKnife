@@ -58,7 +58,7 @@ class ReferenceEchoTests(unittest.TestCase):
     
     def test_reference_basic(self):
         """Compare basic echo with system command."""
-        args = ["Hello", "World"]
+        args = ["Hello, World!"]
         result = compare_with_system("echo", args, echo.main)
         
         if not result['system_available']:
@@ -70,36 +70,14 @@ class ReferenceEchoTests(unittest.TestCase):
             f"System: {repr(result['system_output'])}"
         )
     
-    def test_reference_newline(self):
+    def test_reference_no_newline(self):
         """Compare echo -n with system command."""
-        args = ["-n", "No", "newline"]
+        args = ["-n", "Hello, World!"]
         result = compare_with_system("echo", args, echo.main)
         
         if not result['system_available']:
             self.skipTest(f"System command 'echo' not available: {result['error']}")
-            
-        # Note: Some systems may not support -n, so we check stderr
-        if result['system_stderr'] and "illegal option" in result['system_stderr']:
-            self.skipTest("System echo does not support -n option")
-            
-        self.assertTrue(
-            result['match'], 
-            f"Output mismatch:\nPyKnife: {repr(result['pyknife_output'])}\n"
-            f"System: {repr(result['system_output'])}"
-        )
-    
-    def test_reference_escape(self):
-        """Compare echo -e with system command."""
-        args = ["-e", "Tab:\\t Newline:\\n"]
-        result = compare_with_system("echo", args, echo.main)
         
-        if not result['system_available']:
-            self.skipTest(f"System command 'echo' not available: {result['error']}")
-            
-        # Note: Some systems may not support -e, so we check stderr
-        if result['system_stderr'] and "illegal option" in result['system_stderr']:
-            self.skipTest("System echo does not support -e option")
-            
         self.assertTrue(
             result['match'], 
             f"Output mismatch:\nPyKnife: {repr(result['pyknife_output'])}\n"

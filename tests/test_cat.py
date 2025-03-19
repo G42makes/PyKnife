@@ -79,13 +79,13 @@ class TestCat(unittest.TestCase):
     def test_number_option(self):
         """Test cat with -n option (number all lines)."""
         cat.main(["-n", self.simple_file])
-        expected = "     1  Line 1\n     2  Line 2\n     3  Line 3\n"
+        expected = "     1\tLine 1\n     2\tLine 2\n     3\tLine 3\n"
         self.assertEqual(sys.stdout.getvalue(), expected)
 
     def test_number_nonblank_option(self):
         """Test cat with -b option (number non-blank lines)."""
         cat.main(["-b", self.empty_lines_file])
-        expected = "     1  Line 1\n\n     2  Line 3\n\n     3  Line 5\n"
+        expected = "     1\tLine 1\n\n     2\tLine 3\n\n     3\tLine 5\n"
         self.assertEqual(sys.stdout.getvalue(), expected)
 
     def test_show_ends_option(self):

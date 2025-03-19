@@ -226,62 +226,45 @@ class ReferenceMkdirTests(unittest.TestCase):
     
     def setUp(self):
         """Set up for reference tests."""
-        self.test_dir = tempfile.mkdtemp()
-        self.test_dirs = []
-
+        # Create a temporary base directory
+        self.base_dir = tempfile.mkdtemp()
+        
+        # Path for a new directory to create
+        self.new_dir = os.path.join(self.base_dir, "test_dir")
+    
     def tearDown(self):
         """Clean up after reference tests."""
-        for dir_path in self.test_dirs:
-            if os.path.exists(dir_path):
-                try:
-                    shutil.rmtree(dir_path)
-                except OSError:
-                    pass
-        
-        try:
-            shutil.rmtree(self.test_dir)
-        except OSError:
-            pass
-
-    def get_test_dir_path(self, dirname):
-        """Get path for a test directory."""
-        path = os.path.join(self.test_dir, dirname)
-        self.test_dirs.append(path)
-        return path
-
+        # Remove the test directory and all contents
+        shutil.rmtree(self.base_dir, ignore_errors=True)
+    
     def test_reference_basic(self):
         """Compare basic mkdir with system command."""
-        test_dir = self.get_test_dir_path("ref_basic_dir")
-        
-        # Define a basic mkdir command
-        args = [test_dir]
-        
-        # Compare PyKnife implementation with system command
+        args = [self.new_dir]
         result = compare_with_system("mkdir", args, mkdir.main)
         
         if not result['system_available']:
             self.skipTest(f"System command 'mkdir' not available: {result['error']}")
         
-        # Check if the directory was created
-        self.assertTrue(os.path.exists(test_dir))
-        self.assertTrue(os.path.isdir(test_dir))
+        # Check if directory was created
+        self.assertTrue(os.path.isdir(self.new_dir))
         
+        if 'pyknife_exit_code' in result:
+            self.assertEqual(result['pyknife_exit_code'], 0)
+    
     def test_reference_parents(self):
         """Compare mkdir -p with system command."""
-        test_dir = self.get_test_dir_path("ref_parent/child/grandchild")
-        
-        # Define mkdir command with -p option
-        args = ["-p", test_dir]
-        
-        # Compare PyKnife implementation with system command
+        nested_dir = os.path.join(self.base_dir, "parent", "child", "grandchild")
+        args = ["-p", nested_dir]
         result = compare_with_system("mkdir", args, mkdir.main)
         
         if not result['system_available']:
             self.skipTest(f"System command 'mkdir' not available: {result['error']}")
         
-        # Check if the directory was created
-        self.assertTrue(os.path.exists(test_dir))
-        self.assertTrue(os.path.isdir(test_dir))
+        # Check if directory was created
+        self.assertTrue(os.path.isdir(nested_dir))
+        
+        if 'pyknife_exit_code' in result:
+            self.assertEqual(result['pyknife_exit_code'], 0)
 
 
 if __name__ == "__main__":

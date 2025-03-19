@@ -99,10 +99,10 @@ def process_stream(stream, options, line_number=1):
         # Handle line numbering
         prefix = ""
         if number_nonblank and line.strip():
-            prefix = f"{line_number:6d}  "
+            prefix = f"{line_number:6d}\t"
             line_number += 1
         elif number_all:
-            prefix = f"{line_number:6d}  "
+            prefix = f"{line_number:6d}\t"
             line_number += 1
         
         # Process special characters

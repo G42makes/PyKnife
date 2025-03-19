@@ -148,21 +148,20 @@ class ReferenceHeadTests(unittest.TestCase):
     
     def setUp(self):
         """Set up for reference tests."""
+        # Create temporary test files
         self.temp_files = []
         
-        # Create a file with 20 lines
-        content = "\n".join(f"Line {i}" for i in range(1, 21))
-        self.test_file = self.create_temp_file(
-            "test_file.txt",
-            content + "\n"
-        )
-
+        # Create a test file with 20 lines
+        content = "\n".join([f"Line {i}" for i in range(1, 21)])
+        self.test_file = self.create_temp_file("test_lines.txt", content)
+    
     def tearDown(self):
-        """Clean up after tests."""
+        """Clean up after reference tests."""
+        # Clean up temporary files
         for file_path in self.temp_files:
             if os.path.exists(file_path):
                 os.remove(file_path)
-
+    
     def create_temp_file(self, name, content):
         """Create a temporary file with given content."""
         fd, path = tempfile.mkstemp(suffix=name)
@@ -173,7 +172,7 @@ class ReferenceHeadTests(unittest.TestCase):
         
         self.temp_files.append(path)
         return path
-
+    
     def test_reference_basic(self):
         """Compare basic head with system command."""
         args = [self.test_file]
